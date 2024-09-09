@@ -1,0 +1,53 @@
+import React from 'react';
+
+export class ErrorBoundary extends React.Component {
+  static getDerivedStateFromError(error: Error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true, error };
+  }
+
+  state: { hasError: boolean; error: any } = {
+    hasError: false,
+    error: undefined,
+  };
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    // You can also log the error to an error reporting service
+    console.error(error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return (
+        <div style={{}} className="w-full p-4 ">
+          <div className="w-full p-4 rounded-md B-ui-components_bangle-error-boundary">
+            <div className="w-full text-5xl text-center">🙄</div>
+
+            <h1 className="w-full my-4 text-center">Что-то пошло не так</h1>
+
+            <div className="w-full text-sm text-center">
+              Помогите нам исправить это отправьте нам на{' '}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                className="font-extrabold underline"
+                href="https://flent.ru/contacts/"
+              >
+                Flent
+              </a>
+              <div className="w-full text-sm italic text-center">
+                Error:{' '}
+                {this.state.error?.displayMessage ||
+                  this.state.error?.message ||
+                  this.state.error?.name}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
